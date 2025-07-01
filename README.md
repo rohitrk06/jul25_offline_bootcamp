@@ -20,5 +20,17 @@ Once you have activated the virtual environment, you can install the required pa
 ```bash
 pip install -r requirements.txt
 ```
+or you can install the packages individually:
 
+```bash
+pip install flask
+pip install flask_sqlalchemy
+```
+
+To run the Flask application, use the following command:
+
+```bash
+python app.py
+```
+provided 'app.py' is the main file of your Flask application.
 
