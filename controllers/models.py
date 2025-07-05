@@ -27,6 +27,8 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
 
+    # products = db.relationship('Product')
+
     def __repr__(self):
         return f'<Category {self.name}>'
     
@@ -36,7 +38,15 @@ class Product(db.Model):
     price = db.Column(db.Float, nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
 
-    category = db.relationship('Category')
+    category = db.relationship('Category', backref='products')
 
     def __repr__(self):
         return f'<Product {self.name}>'
+
+
+# product = Product.query.filter_by(name='Sample Product').first()
+# product.category.name
+
+
+# category = Category.query.filter_by(name='Sample Category').first()
+# category.products[0].name

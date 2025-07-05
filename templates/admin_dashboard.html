@@ -1,0 +1,38 @@
+<div class = "container-fluid">
+{% for category in categories %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-9">
+                {{ category.name }}
+            </div>
+            <div class="col-3">
+                <a href="{{ url_for('edit_category', category_id=category.id) }}" class="btn btn-primary">Edit</a>
+                <a href="{{ url_for('delete_category', category_id=category.id) }}" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+        <div class="row">
+            <table>
+                <thead>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </thead>
+                <tbody>
+                    {% for product in category.products %}
+                    <tr>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.price }}</td>
+                        <td>
+                            <a href="#" class="btn btn-primary">Edit</a>
+                            <a href="#" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    {%endfor %}
+                </tbody>
+            </table>
+            
+        </div>
+
+    </div>
+{% endfor %}
+</div>

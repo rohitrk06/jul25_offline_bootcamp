@@ -6,7 +6,9 @@ from controllers.models import *
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    categories = Category.query.all()
+
+    return render_template('home.html', categories=categories)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -141,4 +143,45 @@ def add_product():
         db.session.add(product)
         db.session.commit()
         flash('Product added successfully!', 'success')
+        return redirect(url_for('home'))
+    
+
+@app.route('/category/<int:category_id>/delete', methods=['GET'])
+def delete_category(category_id):
+    category = Category.query.get(category_id)
+    if not category:
+        flash('Category not found.', 'error')
+        return redirect(url_for('home'))
+    
+    db.session.delete(category)
+    db.session.commit()
+    flash('Category deleted successfully!', 'success')
+    return redirect(url_for('home'))
+
+@app.route('/category/<int:category_id>/edit', methods=['GET', 'POST'])
+def edit_category(category_id):
+    category = Category.query.get(category_id)
+    if not category:
+        flash('Category not found.', 'error')
+        return redirect(url_for('home'))
+    
+    if request.method == 'GET':
+        return render_template('edit_category.html', category=category)
+    
+    if request.method == 'POST':
+        name = request.form.get('name')
+
+        #data validation
+        if not name:
+            flash('Category name is required.', 'error')
+            return redirect(url_for('edit_category', category_id=category.id))
+        
+        existing_category = Category.query.filter_by(name=name).first()
+        if existing_category and existing_category.id != category.id:
+            flash('Category already exists.', 'error')
+            return redirect(url_for('edit_category', category_id=category.id))
+        
+        category.name = name
+        db.session.commit()
+        flash('Category updated successfully!', 'success')
         return redirect(url_for('home'))
